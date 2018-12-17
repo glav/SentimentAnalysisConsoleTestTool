@@ -22,11 +22,16 @@ namespace SentimentAnalysisConsoleTestTool.Config
             Configuration = builder.Build();
         }
 
-        public static string ConnectionStringStorageAccount
+        public static string ApiKey
             => new string[]{
-                "ConnectionStrings:StorageAccount",
-                "ConnectionStrings__StorageAccount",
-                "TF_STORAGE_CONNECTION_STRING"
+                "ApiKey",
+                "TF_APIKEY"
+            }.TryGetEnvironmentVariableElseUseConfig();
+
+        public static string ApiLocation
+            => new string[]{
+                "ApiLocation",
+                "TF_APILOCATION"
             }.TryGetEnvironmentVariableElseUseConfig();
     }
 }
