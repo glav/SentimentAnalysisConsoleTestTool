@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SentimentAnalysisConsoleTestTool
@@ -11,24 +12,35 @@ namespace SentimentAnalysisConsoleTestTool
         {
             _args = args;
             ArgumentType = ArgType.Invalid;
+            Options = ArgOptions.None;
             ParseArguments();
         }
 
         private void ParseArguments()
         {
-            if (_args == null || _args.Length != 2)
+            if (_args == null || _args.Length == 0)
             {
                 return;
             }
 
-            if (_args[0].ToLowerInvariant() == "-f")
+            if (_args.Any(a => a.ToLowerInvariant() == "-?" || _args.Any(b => b.ToLowerInvariant() == "-help")))
+            {
+                return;
+            }
+
+            if (_args.Any(a => a.ToLowerInvariant() == "-k"))
+            {
+                Options = ArgOptions.IncludeKeyphraseAnalysis;
+            }
+
+            if (_args.Any(a => a.ToLowerInvariant() == "-f"))
             {
                 Filename = _args[1];
                 ArgumentType = ArgType.Filename;
                 return;
             }
 
-            if (_args[0].ToLowerInvariant() == "-t")
+            if (_args.Any(a => a.ToLowerInvariant() == "-t"))
             {
                 TextToAnalyse = _args[1];
                 ArgumentType = ArgType.ManualText;
@@ -40,6 +52,7 @@ namespace SentimentAnalysisConsoleTestTool
         public string TextToAnalyse { get; private set; }
 
         public ArgType ArgumentType { get; private set; }
+        public ArgOptions Options { get; private set; }
 
 
     }
@@ -49,5 +62,11 @@ namespace SentimentAnalysisConsoleTestTool
         Invalid,
         Filename,
         ManualText
+    }
+
+    public enum ArgOptions
+    {
+        None,
+        IncludeKeyphraseAnalysis
     }
 }
