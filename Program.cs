@@ -12,6 +12,7 @@ namespace SentimentAnalysisConsoleTestTool
             Console.WriteLine("Sentiment Analysis CLI tool.");
             Console.WriteLine("API Location: {0}", Config.ConfigReader.ApiLocation);
             Console.WriteLine("API Key: {0}", string.IsNullOrWhiteSpace(Config.ConfigReader.ApiKey) ? "Not set!" : "Set");
+
             var cliArguments = new CliArguments(args);
 
             if (cliArguments.ArgumentType == ArgType.Invalid)
@@ -21,6 +22,12 @@ namespace SentimentAnalysisConsoleTestTool
                 Console.WriteLine("\tSentimentAnalysisConsoleTestTool -t \"Text to analyse\"");
                 Console.WriteLine("\tSentimentAnalysisConsoleTestTool -f {filename.txt} -k\n");
 
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(Config.ConfigReader.ApiKey) || string.IsNullOrWhiteSpace(Config.ConfigReader.ApiLocation) )
+            {
+                Console.WriteLine("No API location or key is present. Cannot continue.");
                 return;
             }
 
